@@ -1,0 +1,72 @@
+Simple include
+.
+!!!include(a.md)!!!
+
+*content*
+.
+<p><em>a content</em></p>
+<p><em>content</em></p>
+.
+
+
+Nested includes
+.
+!!!include(b.md)!!!
+
+*content*
+.
+<p><em>b content</em></p>
+<p><em>a content</em></p>
+<p><em>content</em></p>
+.
+
+
+includes in sub directories
+.
+!!!include(L1/a1.md)!!!
+
+!!!include(L1/L2/a2.md)!!!
+
+*content*
+.
+<p><em>a1 content</em></p>
+<p><em>a2 content</em></p>
+<p><em>content</em></p>
+.
+
+
+includes in sub directories. L1/L2/b2.md includes c2.md
+.
+!!!include(L1/L2/b2.md)!!!
+
+*content*
+.
+<p><em>b2 content</em></p>
+<p><em>c2 content</em></p>
+<p><em>content</em></p>
+.
+
+
+includes in sub directories. L1/L2/d2.md includes ../../a.md, ../a1.md, ../../L1/L2/a2.md
+.
+!!!include(L1/L2/d2.md)!!!
+
+*content*
+.
+<p><em>d2 content</em></p>
+<p><em>a content</em></p>
+<p><em>a1 content</em></p>
+<p><em>a2 content</em></p>
+<p><em>content</em></p>
+.
+
+
+inline includes
+.
+!!!include(x.md)!!!!!!include(y.md)!!!!!!include(z.md)!!!
+
+*content*
+.
+<p><em>x contenty contentz content</em></p>
+<p><em>content</em></p>
+.

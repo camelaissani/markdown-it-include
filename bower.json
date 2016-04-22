@@ -1,0 +1,27 @@
+{
+  "name": "markdown-it-include",
+  "main": "dist/markdown-it-include.js",
+  "homepage": "https://github.com/camelaissani/markdown-it-include",
+  "description": "Markdown-it plugin which adds the ability to include markdown fragment files.",
+  "keywords": [
+    "markdown-it-plugin",
+    "markdown-it",
+    "markdown",
+    "include"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "benchmark",
+    "bower_components",
+    "coverage",
+    "demo",
+    "docs",
+    "lib",
+    "node_modules",
+    "support",
+    "test",
+    "Makefile",
+    "index*"
+  ]
+}
