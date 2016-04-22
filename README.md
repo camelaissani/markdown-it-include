@@ -1,5 +1,7 @@
 # markdown-it-include
 
+[![Build Status](https://travis-ci.org/camelaissani/markdown-it-include.svg?branch=master)](https://travis-ci.org/camelaissani/markdown-it-include) [![Coverage Status](https://coveralls.io/repos/github/camelaissani/markdown-it-include/badge.svg?branch=master)](https://coveralls.io/github/camelaissani/markdown-it-include?branch=master)
+
 Markdown-it plugin which adds the ability to include markdown fragment files.
 
 ## Install
