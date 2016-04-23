@@ -20,7 +20,7 @@ bower install markdown-it-include --save
 ```js
 var path = require('path'),
     md = require('markdown-it')()
-            .use(require('markdown-it-include', path.join(__dirname, 'your_md_directory')));
+            .use(require('markdown-it-include'), path.join(__dirname, 'your_md_directory'));
 
 md.render('!!!include(header.md)!!!\n\n*content*\n\n!!!include(footer.md)!!!');
 ```
