@@ -1,35 +1,35 @@
 {
-    "name": "markdown-it-include",
-    "version": "0.0.1",
-    "description": "Markdown-it plugin which adds the ability to include markdown fragment files.",
-    "keywords": [
-        "markdown-it-plugin",
-        "markdown-it",
-        "markdown",
-        "inlcude"
-    ],
-    "repository" : {
-        "type" : "git",
-        "url" : "https://github.com/camelaissani/markdown-it-include"
-    },
-    "bugs": {
-        "url": "https://github.com/camelaissani/markdown-it-include/issues"
-    },
-    "license": "MIT",
-    "main": "index.js",
-    "scripts": {
-        "test": "make test"
-    },
-    "devDependencies": {
-        "eslint": "0.10.2",
-        "eslint-plugin-nodeca": "^1.0.0",
-        "browserify": "*",
-        "coveralls": "^2.11.2",
-        "uglify-js": "*",
-        "istanbul": "*",
-        "chai": "*",
-        "mocha": "*",
-        "markdown-it-testgen": "~0.1.0",
-        "markdown-it": "markdown-it/markdown-it"
-    }
+  "name": "markdown-it-include",
+  "version": "0.0.2",
+  "description": "Markdown-it plugin which adds the ability to include markdown fragment files.",
+  "keywords": [
+    "markdown-it-plugin",
+    "markdown-it",
+    "markdown",
+    "inlcude"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/camelaissani/markdown-it-include"
+  },
+  "bugs": {
+    "url": "https://github.com/camelaissani/markdown-it-include/issues"
+  },
+  "license": "MIT",
+  "main": "index.js",
+  "scripts": {
+    "test": "make test"
+  },
+  "devDependencies": {
+    "eslint": "0.10.2",
+    "eslint-plugin-nodeca": "^1.0.0",
+    "browserify": "*",
+    "coveralls": "^2.11.2",
+    "uglify-js": "*",
+    "istanbul": "*",
+    "chai": "*",
+    "mocha": "*",
+    "markdown-it-testgen": "~0.1.0",
+    "markdown-it": "markdown-it/markdown-it"
+  }
 }
