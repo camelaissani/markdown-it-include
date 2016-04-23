@@ -20,6 +20,11 @@
   "scripts": {
     "test": "make test"
   },
+  "author": {
+    "name" : "Camel Aissani",
+    "email" : "camel.aissani@gmail.com",
+    "url" : "https://nuageprive.fr/"
+  },
   "devDependencies": {
     "eslint": "0.10.2",
     "eslint-plugin-nodeca": "^1.0.0",
