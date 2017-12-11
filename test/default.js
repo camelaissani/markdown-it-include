@@ -13,6 +13,14 @@ describe('plugin', function () {
                 .use(require('../'), path.join(__dirname, 'fixtures'));
       generate(path.join(__dirname, 'fixtures/default.txt'), md);
     });
+
+    it ('including same field twice', function() {
+      var md = require('markdown-it')()
+                  .use(require('../'), path.join(__dirname, 'fixtures'));
+
+      assert.equal(md.render('!!! include( a.md ) !!!\n!!! include( a.md ) !!!'),
+                   '<p><em>a content</em>\n<em>a content</em></p>\n');
+    });
   });
 
   describe('wrong workflows', function() {

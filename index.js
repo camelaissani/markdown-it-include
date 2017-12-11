@@ -6,9 +6,8 @@ var path = require('path'),
 var INCLUDE_RE = /\!{3}\s*include\s*\(\s*(.+?)\s*\)\s*\!{3}/i;
 
 module.exports = function include_plugin(md, basedir) {
-  var filesProcessed;
-
-  function _replaceIncludeByContent(src, rootdir, parentFilePath) {
+  function _replaceIncludeByContent(src, rootdir, parentFilePath, filesProcessed) {
+    filesProcessed = filesProcessed ? filesProcessed.slice() : []; // making a copy
     var cap, filePath, mdSrc, indexOfCircularRef;
 
     // store parent file path to check circular references
@@ -25,7 +24,8 @@ module.exports = function include_plugin(md, basedir) {
       }
 
       // replace include by file content
-      mdSrc = _replaceIncludeByContent(fs.readFileSync(filePath, 'utf8'), path.dirname(filePath), filePath);
+      mdSrc = fs.readFileSync(filePath, 'utf8');
+      mdSrc = _replaceIncludeByContent(mdSrc, path.dirname(filePath), filePath, filesProcessed);
       src = src.slice(0, cap.index) + mdSrc + src.slice(cap.index + cap[0].length, src.length);
     }
     return src;
@@ -33,7 +33,6 @@ module.exports = function include_plugin(md, basedir) {
 
   function _includeFileParts(state) {
     var rootdir = basedir || '.';
-    filesProcessed = [];
     state.src = _replaceIncludeByContent(state.src, rootdir);
   }
 
