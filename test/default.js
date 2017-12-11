@@ -7,13 +7,13 @@ var assert = require('chai').assert,
 /*eslint-env mocha*/
 
 describe('plugin', function () {
-  describe('right worflows', function () {
+  describe('right workflows', function () {
     var md = require('markdown-it')()
               .use(require('../'), path.join(__dirname, 'fixtures'));
     generate(path.join(__dirname, 'fixtures/default.txt'), md);
   });
 
-  describe('wrong worflows', function() {
+  describe('wrong workflows', function() {
     it ('file not found', function() {
       var md = require('markdown-it')()
                   .use(require('../'), path.join(__dirname, 'fixtures'));
