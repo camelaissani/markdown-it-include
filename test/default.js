@@ -8,9 +8,11 @@ var assert = require('chai').assert,
 
 describe('plugin', function () {
   describe('right workflows', function () {
-    var md = require('markdown-it')()
-              .use(require('../'), path.join(__dirname, 'fixtures'));
-    generate(path.join(__dirname, 'fixtures/default.txt'), md);
+    it ('default.txt', function() {
+      var md = require('markdown-it')()
+                .use(require('../'), path.join(__dirname, 'fixtures'));
+      generate(path.join(__dirname, 'fixtures/default.txt'), md);
+    });
   });
 
   describe('wrong workflows', function() {
