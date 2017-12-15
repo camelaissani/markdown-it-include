@@ -26,15 +26,15 @@
     "url": "https://nuageprive.fr/"
   },
   "devDependencies": {
-    "browserify": "*",
-    "chai": "*",
+    "browserify": "^14.5.0",
+    "chai": "^4.1.2",
     "coveralls": "^2.11.2",
-    "eslint": "0.10.2",
-    "eslint-plugin-nodeca": "^1.0.0",
-    "istanbul": "*",
-    "markdown-it": "github:markdown-it/markdown-it",
-    "markdown-it-testgen": "~0.1.0",
-    "mocha": "*",
-    "uglify-js": "*"
+    "eslint": "^0.10.2",
+    "eslint-plugin-nodeca": "^1.0.3",
+    "istanbul": "^0.4.5",
+    "markdown-it": "^8.4.0",
+    "markdown-it-testgen": "^0.1.4",
+    "mocha": "^4.0.1",
+    "uglify-js": "^3.2.2"
   }
 }
