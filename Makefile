@@ -10,7 +10,7 @@ CURR_HEAD   := $(firstword $(shell git show-ref --hash HEAD | cut -b -6) master)
 GITHUB_PROJ := https://github.com//camelaissani//markdown-it-include
 
 lint:
-	./node_modules/.bin/eslint --reset .
+	./node_modules/.bin/eslint .
 
 test: lint
 	./node_modules/.bin/mocha -R spec
@@ -30,7 +30,7 @@ browserify:
 		./node_modules/.bin/browserify ./ -s markdownitInclude \
 		) > dist/markdown-it-include.js
 	# Minify
-	./node_modules/.bin/uglifyjs dist/markdown-it-include.js -b beautify=false,ascii-only=true -c -m \
+	./node_modules/.bin/uglifyjs dist/markdown-it-include.js -b beautify=false,ascii_only=true -c -m \
 		--preamble "/*! ${NPM_PACKAGE} ${NPM_VERSION} ${GITHUB_PROJ} @license MIT */" \
 		> dist/markdown-it-include.min.js
 
