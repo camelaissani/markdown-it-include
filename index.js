@@ -5,7 +5,19 @@ var path = require('path'),
 
 var INCLUDE_RE = /\!{3}\s*include\s*\(\s*(.+?)\s*\)\s*\!{3}/i;
 
-module.exports = function include_plugin(md, basedir) {
+module.exports = function include_plugin(md, options) {
+  var root = '.',
+      includeRe = INCLUDE_RE;
+
+  if (options) {
+    if (typeof options === 'string') {
+      root = options;
+    } else {
+      root = options.root || root;
+      includeRe = options.includeRe || includeRe;
+    }
+  }
+
   function _replaceIncludeByContent(src, rootdir, parentFilePath, filesProcessed) {
     filesProcessed = filesProcessed ? filesProcessed.slice() : []; // making a copy
     var cap, filePath, mdSrc, indexOfCircularRef;
@@ -14,8 +26,8 @@ module.exports = function include_plugin(md, basedir) {
     if (parentFilePath) {
       filesProcessed.push(parentFilePath);
     }
-    while ((cap = INCLUDE_RE.exec(src))) {
-      filePath = path.resolve(rootdir, cap[1]);
+    while ((cap = includeRe.exec(src))) {
+      filePath = path.resolve(rootdir, cap[1].trim());
 
       // check if circular reference
       indexOfCircularRef = filesProcessed.indexOf(filePath);
@@ -32,8 +44,7 @@ module.exports = function include_plugin(md, basedir) {
   }
 
   function _includeFileParts(state) {
-    var rootdir = basedir || '.';
-    state.src = _replaceIncludeByContent(state.src, rootdir);
+    state.src = _replaceIncludeByContent(state.src, root);
   }
 
   md.core.ruler.before('normalize', 'include', _includeFileParts);

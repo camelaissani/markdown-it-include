@@ -55,6 +55,29 @@ It will produce this
 <p>Follow me on twitter!</p>
 ```
 
+## Options
+
+```js
+var md = require('markdown-it')()
+            .use(require('markdown-it-include'), [, options]);
+```
+
+* Type: `String|Object`
+
+If it's a string, it's the same as `options.root`.
+
+### root
+* Type: `String`
+* Default: `.`
+
+Root Directory.
+
+### includeRe
+* Type: `RegExp`
+* Default: `/\!{3}\s*include\s*\(\s*(.+?)\s*\)\s*\!{3}/i`
+
+Regular expression, you can customize it as you like.
+
 ## Disclaimer
 
 This purposefully doesn't conform to any spec or discussion related to CommonMark.

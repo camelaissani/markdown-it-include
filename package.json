@@ -1,12 +1,12 @@
 {
   "name": "markdown-it-include",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Markdown-it plugin which adds the ability to include markdown fragment files.",
   "keywords": [
     "markdown-it-plugin",
     "markdown-it",
     "markdown",
-    "inlcude"
+    "include"
   ],
   "repository": {
     "type": "git",
