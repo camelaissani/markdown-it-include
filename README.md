@@ -55,6 +55,29 @@ It will produce this
 <p>Follow me on twitter!</p>
 ```
 
+## Options
+
+```js
+var md = require('markdown-it')()
+            .use(require('markdown-it-include'), [, options]);
+```
+
+* Type: `String|Object`
+
+If it's a string, it's the same as `options.root`.
+
+### root
+* Type: `String`
+* Default: `.`
+
+`root` is the base directory of all the markdown files.
+
+### includeRe
+* Type: `RegExp`
+* Default: `/\!{3}\s*include\s*\(\s*(.+?)\s*\)\s*\!{3}/i`
+
+By default the `!!!include( )!!!` statement is used to include markdown fragment files. This option allows to change the regular expression and then customize this statement.
+
 ## Disclaimer
 
 This purposefully doesn't conform to any spec or discussion related to CommonMark.
