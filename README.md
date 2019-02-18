@@ -70,13 +70,13 @@ If it's a string, it's the same as `options.root`.
 * Type: `String`
 * Default: `.`
 
-Root Directory.
+`root` is the base directory of all the markdown files.
 
 ### includeRe
 * Type: `RegExp`
 * Default: `/\!{3}\s*include\s*\(\s*(.+?)\s*\)\s*\!{3}/i`
 
-Regular expression, you can customize it as you like.
+By default the `!!!include( )!!!` statement is used to include markdown fragment files. This option allows to change the regular expression and then customize this statement.
 
 ## Disclaimer
 
