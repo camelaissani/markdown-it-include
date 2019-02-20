@@ -1,4 +1,4 @@
-/*! markdown-it-include 1.0.1 https://github.com//camelaissani//markdown-it-include @license MIT */(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.markdownitInclude = f()}})(function(){var define,module,exports;return (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
+/*! markdown-it-include 1.1.0 https://github.com//camelaissani//markdown-it-include @license MIT */(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.markdownitInclude = f()}})(function(){var define,module,exports;return (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 
 },{}],2:[function(require,module,exports){
 (function (process){
@@ -500,7 +500,19 @@ var path = require('path'),
 
 var INCLUDE_RE = /\!{3}\s*include\s*\(\s*(.+?)\s*\)\s*\!{3}/i;
 
-module.exports = function include_plugin(md, basedir) {
+module.exports = function include_plugin(md, options) {
+  var root = '.',
+      includeRe = INCLUDE_RE;
+
+  if (options) {
+    if (typeof options === 'string') {
+      root = options;
+    } else {
+      root = options.root || root;
+      includeRe = options.includeRe || includeRe;
+    }
+  }
+
   function _replaceIncludeByContent(src, rootdir, parentFilePath, filesProcessed) {
     filesProcessed = filesProcessed ? filesProcessed.slice() : []; // making a copy
     var cap, filePath, mdSrc, indexOfCircularRef;
@@ -509,8 +521,8 @@ module.exports = function include_plugin(md, basedir) {
     if (parentFilePath) {
       filesProcessed.push(parentFilePath);
     }
-    while ((cap = INCLUDE_RE.exec(src))) {
-      filePath = path.resolve(rootdir, cap[1]);
+    while ((cap = includeRe.exec(src))) {
+      filePath = path.resolve(rootdir, cap[1].trim());
 
       // check if circular reference
       indexOfCircularRef = filesProcessed.indexOf(filePath);
@@ -527,8 +539,7 @@ module.exports = function include_plugin(md, basedir) {
   }
 
   function _includeFileParts(state) {
-    var rootdir = basedir || '.';
-    state.src = _replaceIncludeByContent(state.src, rootdir);
+    state.src = _replaceIncludeByContent(state.src, root);
   }
 
   md.core.ruler.before('normalize', 'include', _includeFileParts);
