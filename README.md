@@ -19,24 +19,19 @@ bower install markdown-it-include --save
 
 Let's create a markdown which uses a header and a footer from two separate files:
 
-**header.md**
+### File: '**header.md**'
 
 ```markdown
-
 # This is my header for all my markdowns
-
 ```
 
-**footer.md**
+### File: '**footer.md**'
 
 ```markdown
-
 Follow me on twitter!
-
 ```
 
 Let's assume that header.md and footer.md are located in `/in/this/directory`.
-
 
 Now it's your turn to play markdown-it!
 
@@ -67,16 +62,39 @@ var md = require('markdown-it')()
 If it's a string, it's the same as `options.root`.
 
 ### root
+
 * Type: `String`
 * Default: `.`
 
 `root` is the base directory of all the markdown files.
 
 ### includeRe
+
 * Type: `RegExp`
 * Default: `/\!{3}\s*include\s*\(\s*(.+?)\s*\)\s*\!{3}/i`
 
 By default the `!!!include( )!!!` statement is used to include markdown fragment files. This option allows to change the regular expression and then customize this statement.
+
+### throwError
+
+* Type: `Boolean`
+* Default: `true`
+
+When set to `false`, instead of throwing an error message, the error message will be written into the output. For references to possible error messages as well as how to change it, see options 'notFoundMessage' and 'circularMessage'
+
+### notFoundMessage
+
+* Type: `String`
+* Default: `File '{{FILE}}' not found`
+
+With `notFoundMessage` the default error message when the to be included file cannot be found can be changed. The marker `{{FILE}}` in the message string will be replaced with the full file path.
+
+### circularMessage
+
+* Type: `String`
+* Default: `Circular reference between '{{FILE}}' and '{{PARENT}}'`
+
+With `circularMessage` the default error message when there is a circular reference between files can be changed. The markers `{{FILE}}` and `{{FILE}}` in the message string will be replaced with the respective full file paths.
 
 ## Disclaimer
 
