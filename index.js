@@ -18,9 +18,9 @@ module.exports = function include_plugin(md, options) {
     } else {
       root = options.root || root;
       includeRe = options.includeRe || includeRe;
-      throwError = options.throwError === undefined ? throwError : options.throwError;
-      notFoundMessage = options.notFoundMessage === undefined ? notFoundMessage : options.notFoundMessage;
-      circularMessage = options.circularMessage === undefined ? circularMessage : options.circularMessage;
+      throwError = options.throwError || throwError;
+      notFoundMessage = options.notFoundMessage || notFoundMessage;
+      circularMessage = options.circularMessage || circularMessage;
     }
   }
 
@@ -34,25 +34,21 @@ module.exports = function include_plugin(md, options) {
     }
     while ((cap = includeRe.exec(src))) {
       filePath = path.resolve(rootdir, cap[1].trim());
-      mdSrc = undefined;
+      mdSrc = '';
 
-      // check if child file exists
+      // check if child file exists or if there is a circular reference
       if (fs.existsSync(filePath) === false) {
         // child file does not exist
         mdSrc = notFoundMessage.replace('{{FILE}}', filePath);
-      } else {
-        // check if circular reference
-        if (filesProcessed.indexOf(filePath) !== -1) {
-          mdSrc = circularMessage.replace('{{FILE}}', filePath).replace('{{PARENT}}', parentFilePath)
-        }
+      } else if (filesProcessed.indexOf(filePath) !== -1) {
+        // reference would be circular
+        mdSrc = circularMessage.replace('{{FILE}}', filePath).replace('{{PARENT}}', parentFilePath);
       }
 
       // check if there were any errors and / or ensure error message is not empty
-      if (mdSrc !== undefined) {
-        if (throwError === true && mdSrc !== '') {
-          throw new Error(mdSrc)
-        }
-      } else {
+      if (mdSrc !== '' && throwError === true) {
+        throw new Error(mdSrc);
+      } else if (mdSrc === '') {
         // get content of child file
         mdSrc = fs.readFileSync(filePath, 'utf8');
         // check if child file also has includes

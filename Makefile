@@ -12,8 +12,14 @@ GITHUB_PROJ := https://github.com//camelaissani//markdown-it-include
 lint:
 	./node_modules/.bin/eslint .
 
+lintWin10PS:
+	.\node_modules\.bin\eslint .
+
 test: lint
 	./node_modules/.bin/mocha -R spec
+
+testWin10PS: lintWin10PS
+	.\node_modules\.bin\mocha -R spec
 
 coverage:
 	rm -rf coverage
