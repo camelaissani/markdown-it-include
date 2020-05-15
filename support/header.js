@@ -5,19 +5,19 @@ const year = new Date().getFullYear();
 const pkg = require('../package.json');
 const version = pkg.version;
 const name = pkg.name.replace(/^.*?\//, '');
-const globalName = (name => {
-  name = name.replace(/^.*?\//, '');
-  name = name.replace('markdown-it', 'markdownit').replace(/-([a-z])/g, function (m, p1) {
+const globalName = (pkgName => {
+  pkgName = pkgName.replace(/^.*?\//, '');
+  pkgName = pkgName.replace('markdown-it', 'markdownit').replace(/-([a-z])/g, function (m, p1) {
     return p1.toUpperCase();
   });
-  return name;
+  return pkgName;
 })(pkg.name);
 
-const removeScope = name => name.replace(/^@.*\//, '');
+const removeScope = pkgName => pkgName.replace(/^@.*\//, '');
 // safeVariableName: taken from microbundle: this is the dist/<name>.*.js used in that utility
-const safeVariableName = (name =>
+const safeVariableName = (pkgName =>
   camelCase(
-    removeScope(name)
+    removeScope(pkgName)
       .toLowerCase()
       .replace(/((^[^a-zA-Z]+)|[^\w.-])|([^a-zA-Z0-9]+$)/g, '')
   ))(name);

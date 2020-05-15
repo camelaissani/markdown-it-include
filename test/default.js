@@ -1,24 +1,24 @@
-'use strict';
+
 
 /*eslint-env mocha*/
 
-var assert = require('chai').assert,
+let assert = require('chai').assert,
     path = require('path'),
     generate = require('markdown-it-testgen');
 
 
-var fixturesPath = path.join(__dirname, 'fixtures');
+let fixturesPath = path.join(__dirname, 'fixtures');
 
 describe('plugin', function () {
   describe('right workflows', function () {
     it ('default.txt', function () {
-      var md = require('markdown-it')()
+      let md = require('markdown-it')()
         .use(require('../'), fixturesPath);
       generate(path.join(__dirname, 'fixtures/default.txt'), md);
     });
 
     it ('including same field twice', function () {
-      var md = require('markdown-it')()
+      let md = require('markdown-it')()
         .use(require('../'), fixturesPath);
 
       assert.equal(md.render('!!! include( a.md ) !!!\n!!! include( a.md ) !!!'),
@@ -26,7 +26,7 @@ describe('plugin', function () {
     });
 
     it ('default options', function () {
-      var md = require('markdown-it')()
+      let md = require('markdown-it')()
         .use(require('../'));
 
       assert.equal(md.render('!!! include( test/fixtures/a.md ) !!!\n'),
@@ -40,7 +40,7 @@ describe('plugin', function () {
     });
 
     it ('root option', function () {
-      var md = require('markdown-it')()
+      let md = require('markdown-it')()
         .use(require('../'), { root: fixturesPath });
 
       assert.equal(md.render('!!! include( a.md ) !!!\n'),
@@ -48,7 +48,7 @@ describe('plugin', function () {
     });
 
     it ('includeRe option', function () {
-      var md = require('markdown-it')()
+      let md = require('markdown-it')()
         .use(require('../'), { root: fixturesPath, includeRe: /<\[include\]\((.+)\)/i });
 
       assert.equal(md.render('<[include]( a.md )\n'),
@@ -58,7 +58,7 @@ describe('plugin', function () {
 
   describe('wrong workflows', function () {
     it ('file not found', function () {
-      var md = require('markdown-it')()
+      let md = require('markdown-it')()
         .use(require('../'), fixturesPath);
 
       assert.throws(function () {
@@ -67,7 +67,7 @@ describe('plugin', function () {
     });
 
     it ('direct circular reference', function () {
-      var md = require('markdown-it')()
+      let md = require('markdown-it')()
         .use(require('../'), fixturesPath);
 
       assert.throws(function () {
@@ -76,7 +76,7 @@ describe('plugin', function () {
     });
 
     it ('indirect circular reference', function () {
-      var md = require('markdown-it')()
+      let md = require('markdown-it')()
         .use(require('../'), fixturesPath);
 
       assert.throws(function () {
