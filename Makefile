@@ -1,7 +1,10 @@
 PATH        := ./node_modules/.bin:${PATH}
 
-NPM_PACKAGE := $(shell node -e 'process.stdout.write(require("./package.json").name)')
-NPM_VERSION := $(shell node -e 'process.stdout.write(require("./package.json").version)')
+NPM_PACKAGE := $(shell support/getGlobalName.js package)
+NPM_VERSION := $(shell support/getGlobalName.js version)
+
+GLOBAL_NAME := $(shell support/getGlobalName.js global)
+BUNDLE_NAME := $(shell support/getGlobalName.js microbundle)
 
 TMP_PATH    := /tmp/${NPM_PACKAGE}-$(shell date +%s)
 
@@ -11,30 +14,54 @@ REMOTE_REPO ?= $(shell git config --get remote.${REMOTE_NAME}.url)
 CURR_HEAD   := $(firstword $(shell git show-ref --hash HEAD | cut -b -6) master)
 GITHUB_PROJ := https://github.com//camelaissani//markdown-it-include
 
+build: lint bundle test coverage todo
+
 lint:
 	eslint .
 
-test: lint
-	mocha -R spec
+lintfix:
+	eslint --fix .
+
+bundle:
+	-rm -rf ./dist
+	mkdir dist
+	microbundle --no-compress --target node --strict --name ${GLOBAL_NAME}
+	npx prepend-header 'dist/*js' support/header.js
+
+test:
+	mocha
 
 coverage:
-	rm -rf .nyc_output
-	nyc mocha
+	-rm -rf coverage
+	-rm -rf .nyc_output
+	cross-env NODE_ENV=test nyc mocha
+
+report-coverage: lint coverage
 
 test-ci: lint coverage
 	nyc report --reporter=text-lcov | coveralls && rm -rf ./nyc_output
 
-browserify:
-	rm -rf ./dist
-	mkdir dist
-	# Browserify
-	( printf "/*! ${NPM_PACKAGE} ${NPM_VERSION} ${GITHUB_PROJ} @license MIT */" ; \
-		browserify ./ -s markdownitInclude \
-		) > dist/markdown-it-include.js
-	# Minify
-	uglifyjs dist/markdown-it-include.js -b beautify=false,ascii_only=true -c -m \
-		--preamble "/*! ${NPM_PACKAGE} ${NPM_VERSION} ${GITHUB_PROJ} @license MIT */" \
-		> dist/markdown-it-include.min.js
+todo:
+	@echo ""
+	@echo "TODO list"
+	@echo "---------"
+	@echo ""
+	grep 'TODO' -n -r ./ --exclude-dir=node_modules --exclude-dir=unicode-homographs --exclude-dir=dist --exclude-dir=coverage --exclude=Makefile 2>/dev/null || test true
 
-.PHONY: lint test coverage
-.SILENT: lint test
+clean:
+	-rm -rf ./coverage/
+	-rm -rf ./dist/
+	-rm -rf ./.nyc_output/
+
+superclean: clean
+	-rm -rf ./node_modules/
+	-rm -f ./package-lock.json
+
+prep: superclean
+	-ncu -a --packageFile=package.json
+	-npm install
+	-npm audit fix
+
+
+.PHONY: clean superclean prep publish lint fix test todo coverage report-coverage doc build gh-doc bundle
+.SILENT: help lint test todo

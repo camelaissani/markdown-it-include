@@ -1,10 +1,12 @@
 'use strict';
 
+/*eslint-env mocha*/
+
 var assert = require('chai').assert,
     path = require('path'),
     generate = require('markdown-it-testgen');
 
-/*eslint-env mocha*/
+
 var fixturesPath = path.join(__dirname, 'fixtures');
 
 describe('plugin', function () {

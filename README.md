@@ -1,8 +1,8 @@
 # markdown-it-include
 
-[![Build Status](https://travis-ci.org/camelaissani/markdown-it-include.svg?branch=master)](https://travis-ci.org/camelaissani/markdown-it-include) [![Coverage Status](https://coveralls.io/repos/github/camelaissani/markdown-it-include/badge.svg?branch=master)](https://coveralls.io/github/camelaissani/markdown-it-include?branch=master)
-
-[![NPM](https://nodei.co/npm/markdown-it-include.png)](https://npmjs.org/package/markdown-it-include)
+[![Build Status](https://img.shields.io/travis/camelaissani/markdown-it-include/master.svg?style=flat)](https://travis-ci.org/camelaissani/markdown-it-include)
+[![NPM version](https://img.shields.io/npm/v/markdown-it-include.svg?style=flat)](https://www.npmjs.org/package/markdown-it-include)
+[![Coverage Status](https://img.shields.io/coveralls/camelaissani/markdown-it-include/master.svg?style=flat)](https://coveralls.io/r/camelaissani/markdown-it-include?branch=master)
 
 Markdown-it plugin which adds the ability to include markdown fragment files.
 
@@ -102,4 +102,4 @@ This purposefully doesn't conform to any spec or discussion related to CommonMar
 
 ## License
 
-[MIT](https://github.com/camelaissani/markdown-it-include/blob/master/LICENSE)
+[MIT](https://github.com/camelaissani/markdown-it-include/LICENSE)
