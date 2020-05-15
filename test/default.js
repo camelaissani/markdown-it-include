@@ -61,7 +61,7 @@ describe('plugin', function () {
 
       assert.throws(function () {
         md.render('!!! include( xxx.md ) !!!');
-      }, Error, /ENOENT/);
+      }, Error, /not found/i);
     });
 
     it ('direct circular reference', function () {
