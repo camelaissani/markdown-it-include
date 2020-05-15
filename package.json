@@ -1,6 +1,6 @@
 {
   "name": "markdown-it-include",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Markdown-it plugin which adds the ability to include markdown fragment files.",
   "keywords": [
     "markdown-it-plugin",
@@ -25,16 +25,19 @@
     "email": "camel.aissani@gmail.com",
     "url": "https://nuageprive.fr/"
   },
+  "peerDependencies": {
+    "markdown-it": ">=8.4.2 <11.0.0"
+  },
   "devDependencies": {
-    "browserify": "16.2.3",
-    "chai": "^4.2.0",
-    "coveralls": "3.0.2",
-    "eslint": "5.14.0",
+    "browserify": "16.5.1",
+    "chai": "4.2.0",
+    "coveralls": "3.1.0",
+    "eslint": "7.0.0",
     "eslint-plugin-nodeca": "1.0.3",
-    "istanbul": "0.4.5",
-    "markdown-it": "8.4.2",
-    "markdown-it-testgen": "0.1.4",
-    "mocha": "5.2.0",
-    "uglify-js": "3.4.9"
+    "markdown-it": "10.0.0",
+    "markdown-it-testgen": "0.1.6",
+    "mocha": "7.1.2",
+    "nyc": "15.0.1",
+    "uglify-js": "3.9.3"
   }
 }

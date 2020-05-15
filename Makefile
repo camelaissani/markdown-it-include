@@ -1,3 +1,5 @@
+PATH        := ./node_modules/.bin:${PATH}
+
 NPM_PACKAGE := $(shell node -e 'process.stdout.write(require("./package.json").name)')
 NPM_VERSION := $(shell node -e 'process.stdout.write(require("./package.json").version)')
 
@@ -10,27 +12,27 @@ CURR_HEAD   := $(firstword $(shell git show-ref --hash HEAD | cut -b -6) master)
 GITHUB_PROJ := https://github.com//camelaissani//markdown-it-include
 
 lint:
-	./node_modules/.bin/eslint .
+	eslint .
 
 test: lint
-	./node_modules/.bin/mocha -R spec
+	mocha -R spec
 
 coverage:
-	rm -rf coverage
-	./node_modules/.bin/istanbul cover node_modules/.bin/_mocha
+	rm -rf .nyc_output
+	nyc mocha
 
-test-ci: lint
-	istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage
+test-ci: lint coverage
+	nyc report --reporter=text-lcov | coveralls && rm -rf ./nyc_output
 
 browserify:
 	rm -rf ./dist
 	mkdir dist
 	# Browserify
 	( printf "/*! ${NPM_PACKAGE} ${NPM_VERSION} ${GITHUB_PROJ} @license MIT */" ; \
-		./node_modules/.bin/browserify ./ -s markdownitInclude \
+		browserify ./ -s markdownitInclude \
 		) > dist/markdown-it-include.js
 	# Minify
-	./node_modules/.bin/uglifyjs dist/markdown-it-include.js -b beautify=false,ascii_only=true -c -m \
+	uglifyjs dist/markdown-it-include.js -b beautify=false,ascii_only=true -c -m \
 		--preamble "/*! ${NPM_PACKAGE} ${NPM_VERSION} ${GITHUB_PROJ} @license MIT */" \
 		> dist/markdown-it-include.min.js
 
