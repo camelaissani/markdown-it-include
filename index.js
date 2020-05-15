@@ -9,8 +9,8 @@ module.exports = function include_plugin(md, options) {
   var root = '.',
       includeRe = INCLUDE_RE,
       throwError = true,
-      notFoundMessage = 'File \'{{FILE}}\' not found',
-      circularMessage = 'Circular reference between \'{{FILE}}\' and \'{{PARENT}}\'';
+      notFoundMessage = 'File \'{{FILE}}\' not found.',
+      circularMessage = 'Circular reference between \'{{FILE}}\' and \'{{PARENT}}\'.';
 
   if (options) {
     if (typeof options === 'string') {
@@ -49,12 +49,22 @@ module.exports = function include_plugin(md, options) {
         if (throwError) {
           throw new Error(errorMessage);
         }
-        mdSrc = errorMessage;
+        mdSrc = `\n\n${errorMessage}\n\n`;
       } else {
         // get content of child file
         mdSrc = fs.readFileSync(filePath, 'utf8');
         // check if child file also has includes
         mdSrc = _replaceIncludeByContent(mdSrc, path.dirname(filePath), filePath, filesProcessed);
+        // remove one trailing newline, if it exists: that way, the included content does NOT
+        // automatically terminate the paragraph it is in due to the writer of the included
+        // part having terminated the content with a newline.
+        // However, when that snippet writer terminated with TWO (or more) newlines, these, minus one,
+        // will be merged with the newline after the #include statement, resulting in a 2-NL paragraph 
+        // termination.
+        let len = mdSrc.length;
+        if (mdSrc[len - 1] === '\n') {
+          mdSrc = mdSrc.substringg(0, len - 1);
+        }
       }
 
       // replace include by file content
