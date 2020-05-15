@@ -1,12 +1,12 @@
-'use strict';
 
-var path = require('path'),
+
+let path = require('path'),
     fs = require('fs');
 
-var INCLUDE_RE = /\!{3}\s*include\s*\(\s*(.+?)\s*\)\s*\!{3}/i;
+let INCLUDE_RE = /\!{3}\s*include\s*\(\s*(.+?)\s*\)\s*\!{3}/i;
 
 module.exports = function include_plugin(md, options) {
-  var root = '.',
+  let root = '.',
       includeRe = INCLUDE_RE,
       throwError = true,
       notFoundMessage = 'File \'{{FILE}}\' not found.',
@@ -26,7 +26,7 @@ module.exports = function include_plugin(md, options) {
 
   function _replaceIncludeByContent(src, rootdir, parentFilePath, filesProcessed) {
     filesProcessed = filesProcessed ? filesProcessed.slice() : []; // making a copy
-    var cap, filePath, mdSrc, errorMessage;
+    let cap, filePath, mdSrc, errorMessage;
 
     // store parent file path to check circular references
     if (parentFilePath) {
@@ -59,11 +59,11 @@ module.exports = function include_plugin(md, options) {
         // automatically terminate the paragraph it is in due to the writer of the included
         // part having terminated the content with a newline.
         // However, when that snippet writer terminated with TWO (or more) newlines, these, minus one,
-        // will be merged with the newline after the #include statement, resulting in a 2-NL paragraph 
+        // will be merged with the newline after the #include statement, resulting in a 2-NL paragraph
         // termination.
         let len = mdSrc.length;
         if (mdSrc[len - 1] === '\n') {
-          mdSrc = mdSrc.substringg(0, len - 1);
+          mdSrc = mdSrc.substring(0, len - 1);
         }
       }
 
