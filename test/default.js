@@ -2,54 +2,55 @@
 
 /*eslint-env mocha*/
 
-let assert = require('chai').assert,
-    path = require('path'),
-    generate = require('markdown-it-testgen');
-
+let assert = require('chai').assert;
+let path = require('path');
+let generate = require('markdown-it-testgen');
+let markdown = require('markdown-it');
+let markdown_it_include = require('../');
 
 let fixturesPath = path.join(__dirname, 'fixtures');
 
 describe('plugin', function () {
   describe('right workflows', function () {
     it ('default.txt', function () {
-      let md = require('markdown-it')()
-        .use(require('../'), fixturesPath);
+      let md = markdown()
+        .use(markdown_it_include, fixturesPath);
       generate(path.join(__dirname, 'fixtures/default.txt'), md);
     });
 
     it ('including same field twice', function () {
-      let md = require('markdown-it')()
-        .use(require('../'), fixturesPath);
+      let md = markdown()
+        .use(markdown_it_include, fixturesPath);
 
       assert.equal(md.render('!!! include( a.md ) !!!\n!!! include( a.md ) !!!'),
         '<p><em>a content</em>\n<em>a content</em></p>\n');
     });
 
     it ('default options', function () {
-      let md = require('markdown-it')()
-        .use(require('../'));
+      let md = markdown()
+        .use(markdown_it_include);
 
       assert.equal(md.render('!!! include( test/fixtures/a.md ) !!!\n'),
         '<p><em>a content</em></p>\n');
 
-      md = require('markdown-it')()
-        .use(require('../'), {});
+      md = markdown()
+        .use(markdown_it_include, {});
 
       assert.equal(md.render('!!! include( test/fixtures/a.md ) !!!\n'),
         '<p><em>a content</em></p>\n');
     });
 
     it ('root option', function () {
-      let md = require('markdown-it')()
-        .use(require('../'), { root: fixturesPath });
+      let md = markdown()
+        .use(markdown_it_include, { root: fixturesPath });
 
       assert.equal(md.render('!!! include( a.md ) !!!\n'),
         '<p><em>a content</em></p>\n');
     });
 
     it ('includeRe option', function () {
-      let md = require('markdown-it')()
-        .use(require('../'), { root: fixturesPath, includeRe: /<\[include\]\((.+)\)/i });
+      let md = markdown()
+        .use(markdown_it_include, { root: fixturesPath, includeRe: /<\[include\]\((.+)\)/i });
 
       assert.equal(md.render('<[include]( a.md )\n'),
         '<p><em>a content</em></p>\n');
@@ -58,8 +59,8 @@ describe('plugin', function () {
 
   describe('wrong workflows', function () {
     it ('file not found', function () {
-      let md = require('markdown-it')()
-        .use(require('../'), fixturesPath);
+      let md = markdown()
+        .use(markdown_it_include, fixturesPath);
 
       assert.throws(function () {
         md.render('!!! include( xxx.md ) !!!');
@@ -67,8 +68,8 @@ describe('plugin', function () {
     });
 
     it ('direct circular reference', function () {
-      let md = require('markdown-it')()
-        .use(require('../'), fixturesPath);
+      let md = markdown()
+        .use(markdown_it_include, fixturesPath);
 
       assert.throws(function () {
         md.render('!!! include( c.md ) !!!');
@@ -76,8 +77,8 @@ describe('plugin', function () {
     });
 
     it ('indirect circular reference', function () {
-      let md = require('markdown-it')()
-        .use(require('../'), fixturesPath);
+      let md = markdown()
+        .use(markdown_it_include, fixturesPath);
 
       assert.throws(function () {
         md.render('!!! include( L1/L2/e2.md ) !!!');
