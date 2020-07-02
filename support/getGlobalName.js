@@ -1,12 +1,13 @@
 #!/usr/bin/env node
 
-/*eslint no-console:0*/
-
-let argparse = require('argparse');
-let hdr = require('./header.js');
+/* eslint no-console:0 */
 
 
-let cli = new argparse.ArgumentParser({
+
+const argparse = require('argparse');
+const hdr = require('./header.js');
+
+const cli = new argparse.ArgumentParser({
   prog: 'getGlobalName',
   version: hdr.version,
   addHelp: true
@@ -18,7 +19,7 @@ cli.addArgument([ 'type' ], {
   choices: [ 'global', 'package', 'version', 'license', 'microbundle' ]
 });
 
-let options = cli.parseArgs();
+const options = cli.parseArgs();
 
 ////////////////////////////////////////////////////////////////////////////////
 

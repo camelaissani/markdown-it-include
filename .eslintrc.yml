@@ -6,7 +6,7 @@ env:
 extends: eslint:recommended
 
 parserOptions: 
-  ecmaVersion: 2018
+  ecmaVersion: 2020
   sourceType: module
   
 rules:
@@ -14,14 +14,14 @@ rules:
   array-bracket-spacing:  [ 2, "always", { "singleValue": true, "objectsInArrays": true, "arraysInArrays": true } ]
   block-scoped-var:       1
   block-spacing:          2
-  brace-style:            [ 2, '1tbs', { allowSingleLine: true } ]
+  brace-style:            [ 1, '1tbs', { allowSingleLine: true } ]
   # Postponed
   #callback-return:        2
   comma-dangle:           2
   comma-spacing:          2
   comma-style:            2
   computed-property-spacing: [ 2, never ]
-  consistent-this:        [ 2, self ]
+  consistent-this:        [ 1, self ]
   consistent-return:      2
   # ? change to multi
   curly:                  [ 2, 'multi-line' ]
@@ -31,7 +31,7 @@ rules:
   func-style:             [ 1, declaration, { "allowArrowFunctions": true } ]
   # Postponed
   #global-require:         2
-  guard-for-in:           2
+  guard-for-in:           1
   handle-callback-err:    2
 
   indent:                 [ 1, 2, { VariableDeclarator: { var: 2, let: 2, const: 3 }, SwitchCase: 0, MemberExpression: "off", ignoreComments: true } ]
@@ -43,7 +43,7 @@ rules:
   max-nested-callbacks:   [ 1, 4 ]
   # string can exceed 80 chars, but should not overflow github website :)
   max-len:                [ 1, 140, 1000 ]
-  new-cap:                2
+  new-cap:                1
   new-parens:             2
   # Postponed
   #newline-after-var:      2
@@ -56,7 +56,7 @@ rules:
   no-cond-assign:         2
   no-console:             1
   no-constant-condition:  2
-  #no-control-regex:       2
+  no-control-regex:       1
   no-debugger:            1
   no-delete-var:          2
   no-div-regex:           2
@@ -88,11 +88,11 @@ rules:
   no-label-var:           2
   no-labels:              2
   no-lone-blocks:         2
-  no-lonely-if:           2
+  no-lonely-if:           1
   no-loop-func:           2
   no-mixed-requires:      2
   no-mixed-spaces-and-tabs: 1
-  no-multi-str:         2
+  no-multi-str:           1
   # Postponed
   #no-native-reassign:     2
   no-negated-in-lhs:      2
@@ -108,6 +108,7 @@ rules:
   no-octal-escape:        2
   no-path-concat:         2
   no-proto:               2
+  no-prototype-builtins:  1
   no-redeclare:           2
   # Postponed
   #no-regex-spaces:        2
@@ -126,7 +127,7 @@ rules:
   no-unreachable:         2
   no-unused-expressions:  2
   no-unused-vars:         1
-  no-use-before-define:   2
+  no-use-before-define:   1
   no-useless-escape:      1
   no-var:                 1
   no-void:                2
@@ -144,8 +145,8 @@ rules:
   space-unary-ops:        2
   # Postponed
   #spaced-comment:         [ 1, always, { exceptions: [ '/', '=' ] } ]
-  strict:                 [ 2, global ]
-  quotes:                 [ 2, single, avoid-escape ]
+  strict:                 [ 1, global ]
+  quotes:                 [ 1, single, avoid-escape ]
   quote-props:            [ 1, 'as-needed', { "keywords": true } ]
   radix:                  2
   use-isnan:              2

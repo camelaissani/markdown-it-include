@@ -1,0 +1,20 @@
+Simple include
+.
+#include(a.md)
+
+*content*
+.
+<p><em>a content</em></p>
+<p><em>content</em></p>
+.
+
+Without braces around the path:
+.
+#include a.md
+
+*content*
+.
+<p><em>a content</em></p>
+<p><em>content</em></p>
+.
+
