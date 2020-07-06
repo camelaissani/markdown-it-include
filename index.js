@@ -8,6 +8,7 @@ let BRACES_RE = /\((.+?)\)/i;
 module.exports = function include_plugin(md, options) {
   const defaultOptions = {
     root: '.',
+    getRootDir: (options, state, startLine, endLine) => options.root,
     includeRe: INCLUDE_RE,
     throwError: true,
     bracesAreOptional: false,
@@ -16,7 +17,9 @@ module.exports = function include_plugin(md, options) {
   };
 
   if (typeof options === 'string') {
-    options = Object.assign({}, defaultOptions, { root: options });
+    options = Object.assign({}, defaultOptions, {
+      root: options
+    });
   } else {
     options = Object.assign({}, defaultOptions, options);
   }
@@ -47,12 +50,12 @@ module.exports = function include_plugin(md, options) {
       if (!errorMessage) {
         filePath = path.resolve(rootdir, includePath);
 
-      // check if child file exists or if there is a circular reference
+        // check if child file exists or if there is a circular reference
         if (!fs.existsSync(filePath)) {
-        // child file does not exist
+          // child file does not exist
           errorMessage = options.notFoundMessage.replace('{{FILE}}', filePath);
         } else if (filesProcessed.indexOf(filePath) !== -1) {
-        // reference would be circular
+          // reference would be circular
           errorMessage = options.circularMessage.replace('{{FILE}}', filePath).replace('{{PARENT}}', parentFilePath);
         }
       }
@@ -86,8 +89,8 @@ module.exports = function include_plugin(md, options) {
     return src;
   }
 
-  function _includeFileParts(state) {
-    state.src = _replaceIncludeByContent(state.src, options.root);
+  function _includeFileParts(state, startLine, endLine, silent) {
+    state.src = _replaceIncludeByContent(state.src, options.getRootDir(options, state, startLine, endLine));
   }
 
   md.core.ruler.before('normalize', 'include', _includeFileParts);

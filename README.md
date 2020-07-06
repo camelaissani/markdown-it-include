@@ -72,6 +72,54 @@ The options object may contain any of these:
 
 `root` is the base directory of all the markdown files.
 
+### get RootDir
+
+* Type: `Function`
+* Default: `(options, state, startLine, endLine) => options.root`
+
+`getRootDir()` can be used to customize the root directory used for the includes in a very flexible way.
+
+Here's an example where the root directory for the relative paths in the MarkDown is set to the directory the currently parsed MarkDown file is located in. Note that by setting this callback in the `state.env` state environment, we can have multiple different functions for multiple parse actions in parallel -- ahandy thing to have when we process the MarkDown content asynchronously, for example!
+
+```js
+// md instance setup:
+const options = {
+  root: '/bogus/',
+  // show the 
+  getRootDir: (options, state, startLine, endLine) => 
+      state.env.getIncludeRootDir(options, state, startLine, endLine) 
+  bracesAreOptional: true
+};
+
+let md = require('markdown-it')()
+           .use(require('markdown-it-include'), options);
+
+...
+
+    // now in some async code rendering multiple MD files, we can do this:
+    
+    // (`mdPath` is an absolute path pointing to the MD file being processed)
+    let mdPath = ...;
+
+    let env = {};
+    env.getIncludeRootDir = function (options, state, startLine, endLine) {
+      return path.dirname(mdPath);
+    };
+
+    // Use the 'unwrapped' version of the md.render / md.parse process:
+    // 
+    // let content = md.render(data); --> .parse + .renderer.render
+    //
+    // .parse --> new state + process: return tokens
+    // let tokens = md.parse(data, env)
+    let state = new md.core.State(data, md, env);   // <-- here our env is injected into state!
+    md.core.process(state);
+    let tokens = state.tokens;
+    // now call md.render():
+    let htmlContent = md.renderer.render(tokens, md.options, env);
+    // presto!              (End of `env` lifetime, BTW.)
+```
+
 ### includeRe
 
 * Type: `RegExp`
