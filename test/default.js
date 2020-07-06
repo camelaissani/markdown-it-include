@@ -129,5 +129,43 @@ describe('plugin', function () {
       assert.match(md.render('#include(xxx.md)'),
         /<h1>INCLUDE ERROR: File .*xxx\.md.* not found\.<\/h1>/i);
     });
+
+    // same example code as in the README for getRootDir, adjusted for the test directories:
+    it ('accepts a dynamic option.getRootDir() function to load includes from active directory', function () {
+      const options2 = {
+        root: '/bogus/',          // this is not used here.
+        getRootDir: (options, state, startLine, endLine) => state.env.getIncludeRootDir(options, state, startLine, endLine),
+        includeRe: /#include(.+)/,
+        bracesAreOptional: true
+      };
+      let md = Md()
+        .use(markdown_it_include, options2);
+
+      // `mdPath` is an absolute path assumed to be pointing to the MD file being processed:
+      let mdPath = path.resolve(path.join(__dirname, 'fixtures/foo/bar.md'));
+
+      let env = {};
+      env.getIncludeRootDir = function (options, state, startLine, endLine) {
+        return path.dirname(mdPath);
+      };
+
+      // Use the 'unwrapped' version of the md.render / md.parse process:
+      // ----------------------------------------------------------------
+      //
+      // let content = md.render(data); --> .parse + .renderer.render
+      //
+      // .parse --> new state + process: return tokens
+      // let tokens = md.parse(data, env)
+      let state = new md.core.State('bla\n\n#include(../z.md)\n\n#include(../q.md)\n', md, env);   // <-- here our env is injected into state!
+      md.core.process(state);
+      let tokens = state.tokens;
+      // now call md.render():
+      let htmlContent = md.renderer.render(tokens, md.options, env);
+      // presto!              (End of `env` lifetime, BTW.)
+
+      // What happened above? q.md includes a1.md and a2.md:
+      assert.equal(htmlContent,
+        '<p>bla</p>\n<p>z content*</p>\n<p>*q content &amp; checking nested includes next:</p>\n<p><em>a1 content</em>\n<em>a2 content</em></p>\n');
+    });
   });
 });
