@@ -6,4 +6,7 @@ node_js:
   - node
 script: npm run build
 before_install: make prep-ci
-after_success: npm run cov
+after_success:
+  - npm install coveralls
+  - npm run cov
+  - cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
