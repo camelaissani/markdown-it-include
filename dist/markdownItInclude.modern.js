@@ -1,10 +1,11 @@
-let path = require('path'),
-    fs = require('fs');
+const path = require('path');
 
-let INCLUDE_RE = /!{3}\s*include(.+?)!{3}/i;
-let BRACES_RE = /\((.+?)\)/i;
+const fs = require('fs');
 
-module.exports = function include_plugin(md, options) {
+const INCLUDE_RE = /!{3}\s*include(.+?)!{3}/i;
+const BRACES_RE = /\((.+?)\)/i;
+
+const include_plugin = (md, options) => {
   const defaultOptions = {
     root: '.',
     getRootDir: (pluginOptions
@@ -18,14 +19,16 @@ module.exports = function include_plugin(md, options) {
   };
 
   if (typeof options === 'string') {
-    options = Object.assign({}, defaultOptions, {
+    options = { ...defaultOptions,
       root: options
-    });
+    };
   } else {
-    options = Object.assign({}, defaultOptions, options);
+    options = { ...defaultOptions,
+      ...options
+    };
   }
 
-  function _replaceIncludeByContent(src, rootdir, parentFilePath, filesProcessed) {
+  const _replaceIncludeByContent = (src, rootdir, parentFilePath, filesProcessed) => {
     filesProcessed = filesProcessed ? filesProcessed.slice() : []; // making a copy
 
     let cap, filePath, mdSrc, errorMessage; // store parent file path to check circular references
@@ -36,7 +39,7 @@ module.exports = function include_plugin(md, options) {
 
     while (cap = options.includeRe.exec(src)) {
       let includePath = cap[1].trim();
-      let sansBracesMatch = BRACES_RE.exec(includePath);
+      const sansBracesMatch = BRACES_RE.exec(includePath);
 
       if (!sansBracesMatch && !options.bracesAreOptional) {
         errorMessage = `INCLUDE statement '${src.trim()}' MUST have '()' braces around the include path ('${includePath}')`;
@@ -79,7 +82,7 @@ module.exports = function include_plugin(md, options) {
         // will be merged with the newline after the #include statement, resulting in a 2-NL paragraph
         // termination.
 
-        let len = mdSrc.length;
+        const len = mdSrc.length;
 
         if (mdSrc[len - 1] === '\n') {
           mdSrc = mdSrc.substring(0, len - 1);
@@ -91,14 +94,16 @@ module.exports = function include_plugin(md, options) {
     }
 
     return src;
-  }
+  };
 
-  function _includeFileParts(state, startLine, endLine
+  const _includeFileParts = (state, startLine, endLine
   /*, silent*/
-  ) {
+  ) => {
     state.src = _replaceIncludeByContent(state.src, options.getRootDir(options, state, startLine, endLine));
-  }
+  };
 
   md.core.ruler.before('normalize', 'include', _includeFileParts);
 };
+
+module.exports = include_plugin;
 //# sourceMappingURL=markdownItInclude.modern.js.map
