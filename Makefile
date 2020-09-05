@@ -24,9 +24,9 @@ lintfix:
 
 bundle:
 	-rm -rf ./dist
-	mkdir dist
+	-mkdir dist
 	microbundle --no-compress --target node --strict --name ${GLOBAL_NAME}
-	npx prepend-header 'dist/*js' support/header.js
+	node support/prependHeader.js
 
 test:
 	mocha
@@ -37,9 +37,6 @@ coverage:
 	cross-env NODE_ENV=test nyc --reporter=lcov --reporter=text-summary mocha
 
 report-coverage: lint coverage
-
-test-ci: lint coverage
-	nyc report --reporter=text-lcov | coveralls && rm -rf ./nyc_output
 
 todo:
 	@echo ""

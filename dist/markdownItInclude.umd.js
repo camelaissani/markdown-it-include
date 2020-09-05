@@ -1,3 +1,5 @@
+/*! markdown-it-include 1.1.1 https://github.com//camelaissani/markdown-it-include @license MIT */
+
 (function (factory) {
   typeof define === 'function' && define.amd ? define(factory) :
   factory();

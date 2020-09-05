@@ -1,11 +1,7 @@
 #!/usr/bin/env node
 
-/* eslint no-console:0 */
-
-
-
 const argparse = require('argparse');
-const hdr = require('./header.js');
+const hdr = require('./header');
 
 const cli = new argparse.ArgumentParser({
   prog: 'getGlobalName',

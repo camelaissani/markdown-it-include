@@ -1,3 +1,5 @@
+/*! markdown-it-include 1.1.1 https://github.com//camelaissani/markdown-it-include @license MIT */
+
 const path = require('path');
 
 const fs = require('fs');
