@@ -85,9 +85,9 @@ Here's an example where the root directory for the relative paths in the MarkDow
 // md instance setup:
 const options = {
   root: '/bogus/',
-  // show the 
-  getRootDir: (options, state, startLine, endLine) => 
-      state.env.getIncludeRootDir(options, state, startLine, endLine) 
+  // show the
+  getRootDir: (options, state, startLine, endLine) =>
+      state.env.getIncludeRootDir(options, state, startLine, endLine),
   bracesAreOptional: true
 };
 
@@ -97,7 +97,7 @@ let md = require('markdown-it')()
 ...
 
     // now in some async code rendering multiple MD files, we can do this:
-    
+
     // (`mdPath` is an absolute path pointing to the MD file being processed)
     let mdPath = ...;
 
@@ -107,7 +107,7 @@ let md = require('markdown-it')()
     };
 
     // Use the 'unwrapped' version of the md.render / md.parse process:
-    // 
+    //
     // let content = md.render(data); --> .parse + .renderer.render
     //
     // .parse --> new state + process: return tokens

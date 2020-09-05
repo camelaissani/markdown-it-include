@@ -6,12 +6,15 @@
   let path = require('path'),
       fs = require('fs');
 
-  let INCLUDE_RE = /\!{3}\s*include(.+?)\!{3}/i;
+  let INCLUDE_RE = /!{3}\s*include(.+?)!{3}/i;
   let BRACES_RE = /\((.+?)\)/i;
 
   module.exports = function include_plugin(md, options) {
     const defaultOptions = {
       root: '.',
+      getRootDir: (pluginOptions
+      /*, state, startLine, endLine*/
+      ) => pluginOptions.root,
       includeRe: INCLUDE_RE,
       throwError: true,
       bracesAreOptional: false,
@@ -44,11 +47,11 @@
           errorMessage = `INCLUDE statement '${src.trim()}' MUST have '()' braces around the include path ('${includePath}')`;
         } else if (sansBracesMatch) {
           includePath = sansBracesMatch[1].trim();
-        } else {
+        } else if (!/^\s/.test(cap[1])) {
           // path SHOULD have been preceeded by at least ONE whitespace character!
-          if (!/^\s/.test(cap[1])) {
-            errorMessage = `INCLUDE statement '${src.trim()}': when not using braces around the path ('${includePath}'), it MUST be preceeded by at least one whitespace character to separate the include keyword and the include path.`;
-          }
+
+          /* eslint max-len: "off" */
+          errorMessage = `INCLUDE statement '${src.trim()}': when not using braces around the path ('${includePath}'), it MUST be preceeded by at least one whitespace character to separate the include keyword and the include path.`;
         }
 
         if (!errorMessage) {
@@ -95,8 +98,10 @@
       return src;
     }
 
-    function _includeFileParts(state) {
-      state.src = _replaceIncludeByContent(state.src, options.root);
+    function _includeFileParts(state, startLine, endLine
+    /*, silent*/
+    ) {
+      state.src = _replaceIncludeByContent(state.src, options.getRootDir(options, state, startLine, endLine));
     }
 
     md.core.ruler.before('normalize', 'include', _includeFileParts);

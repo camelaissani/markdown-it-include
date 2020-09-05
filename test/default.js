@@ -134,20 +134,18 @@ describe('plugin', function () {
     it ('accepts a dynamic option.getRootDir() function to load includes from active directory', function () {
       const options2 = {
         root: '/bogus/',          // this is not used here.
-        getRootDir: (options, state, startLine, endLine) => state.env.getIncludeRootDir(options, state, startLine, endLine),
+        getRootDir: (pluginOptions, state, startLine, endLine) => state.env.getIncludeRootDir(pluginOptions, state, startLine, endLine),
         includeRe: /#include(.+)/,
         bracesAreOptional: true
       };
-      let md = Md()
+      let md = markdown()
         .use(markdown_it_include, options2);
 
       // `mdPath` is an absolute path assumed to be pointing to the MD file being processed:
       let mdPath = path.resolve(path.join(__dirname, 'fixtures/foo/bar.md'));
 
       let env = {};
-      env.getIncludeRootDir = function (options, state, startLine, endLine) {
-        return path.dirname(mdPath);
-      };
+      env.getIncludeRootDir = () => path.dirname(mdPath);
 
       // Use the 'unwrapped' version of the md.render / md.parse process:
       // ----------------------------------------------------------------
@@ -156,6 +154,7 @@ describe('plugin', function () {
       //
       // .parse --> new state + process: return tokens
       // let tokens = md.parse(data, env)
+      /* eslint max-len: "off" */
       let state = new md.core.State('bla\n\n#include(../z.md)\n\n#include(../q.md)\n', md, env);   // <-- here our env is injected into state!
       md.core.process(state);
       let tokens = state.tokens;
@@ -165,6 +164,7 @@ describe('plugin', function () {
 
       // What happened above? q.md includes a1.md and a2.md:
       assert.equal(htmlContent,
+        /* eslint max-len: "off" */
         '<p>bla</p>\n<p>z content*</p>\n<p>*q content &amp; checking nested includes next:</p>\n<p><em>a1 content</em>\n<em>a2 content</em></p>\n');
     });
   });
