@@ -1,4 +1,4 @@
-/*! markdown-it-include 1.1.1 https://github.com//camelaissani/markdown-it-include @license MIT */
+/*! markdown-it-include 2.0.0 https://github.com//camelaissani/markdown-it-include @license MIT */
 
 function _extends() {
   _extends = Object.assign || function (target) {
