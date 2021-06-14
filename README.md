@@ -72,6 +72,22 @@ The options object may contain any of these:
 
 `root` is the base directory of all the markdown files.
 
+### rootScope
+
+* Type: `String`
+* Default: `.`
+
+`rootScope` is the top root directory. No markdown file should be linked outside.
+
+The `rootScope` option is active only when the `rootScopeProtection` is set to `true`.
+
+### rootScopeProtection
+
+* Type: `Boolean`
+* default: `false`
+
+`rootScopeProtection` activates the `rootScope` check 
+
 ### get RootDir
 
 * Type: `Function`
@@ -119,6 +135,15 @@ let tokens = state.tokens;
 let htmlContent = md.renderer.render(tokens, md.options, env);
 // presto!              (End of `env` lifetime, BTW.)
 ```
+
+### get RootScope
+
+* Type: `Function`
+* Default: `(options, state, startLine, endLine) => options.rootScope`
+
+`getgetRootScope()` can be used to customize the root scope directory used for the includes in a very flexible way.
+
+See the `getRootDir` option.
 
 ### includeRe
 
