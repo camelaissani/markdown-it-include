@@ -7,19 +7,24 @@ const BRACES_RE = /\((.+?)\)/i;
 
 const include_plugin = (md, options) => {
   const defaultOptions = {
+    rootScope: '.',
     root: '.',
     getRootDir: (pluginOptions/*, state, startLine, endLine*/) => pluginOptions.root,
+    getRootScope: (pluginOptions/*, state, startLine, endLine*/) => pluginOptions.rootScope,
+    rootScopeProtection: false,
     includeRe: INCLUDE_RE,
     throwError: true,
     bracesAreOptional: false,
     notFoundMessage: 'File \'{{FILE}}\' not found.',
+    outsideRootScopeMessage: 'File \'{{FILE}}\' is outside the specified root directory scope \'{{ROOT}}\'.',
     circularMessage: 'Circular reference between \'{{FILE}}\' and \'{{PARENT}}\'.'
   };
 
   if (typeof options === 'string') {
     options = {
       ...defaultOptions,
-      root: options
+      root: options,
+      rootScope: options
     };
   } else {
     options = {
@@ -28,7 +33,7 @@ const include_plugin = (md, options) => {
     };
   }
 
-  const _replaceIncludeByContent = (src, rootdir, parentFilePath, filesProcessed) => {
+  const _replaceIncludeByContent = (src, rootdir, rootScope, parentFilePath, filesProcessed) => {
     filesProcessed = filesProcessed ? filesProcessed.slice() : []; // making a copy
     let cap, filePath, mdSrc, errorMessage;
 
@@ -52,9 +57,12 @@ const include_plugin = (md, options) => {
 
       if (!errorMessage) {
         filePath = path.resolve(rootdir, includePath);
+        const relativeFilePath = path.relative(rootScope, filePath);
 
-        // check if child file exists or if there is a circular reference
-        if (!fs.existsSync(filePath)) {
+        // check if desired file is a descendant of specified rootDir
+        if (relativeFilePath.startsWith('..') && options.rootScopeProtection) {
+          errorMessage = options.outsideRootScopeMessage.replace('{{FILE}}', filePath).replace('{{ROOT}}', rootdir);
+        } else if (!fs.existsSync(filePath)) { // check if child file exists or if there is a circular reference
           // child file does not exist
           errorMessage = options.notFoundMessage.replace('{{FILE}}', filePath);
         } else if (filesProcessed.indexOf(filePath) !== -1) {
@@ -73,7 +81,7 @@ const include_plugin = (md, options) => {
         // get content of child file
         mdSrc = fs.readFileSync(filePath, 'utf8');
         // check if child file also has includes
-        mdSrc = _replaceIncludeByContent(mdSrc, path.dirname(filePath), filePath, filesProcessed);
+        mdSrc = _replaceIncludeByContent(mdSrc, path.dirname(filePath), rootScope, filePath, filesProcessed);
         // remove one trailing newline, if it exists: that way, the included content does NOT
         // automatically terminate the paragraph it is in due to the writer of the included
         // part having terminated the content with a newline.
@@ -93,7 +101,7 @@ const include_plugin = (md, options) => {
   };
 
   const _includeFileParts = (state, startLine, endLine/*, silent*/) => {
-    state.src = _replaceIncludeByContent(state.src, options.getRootDir(options, state, startLine, endLine));
+    state.src = _replaceIncludeByContent(state.src, options.getRootDir(options, state, startLine, endLine), options.getRootScope(options, state, startLine, endLine));
   };
 
   md.core.ruler.before('normalize', 'include', _includeFileParts);

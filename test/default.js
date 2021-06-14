@@ -49,6 +49,17 @@ describe('plugin', () => {
         '<p><em>a content</em></p>\n');
     });
 
+    it ('rootScope violation without rootScopeProtection activated', () => {
+      const md = markdown()
+          .use(markdown_it_include, {
+            root: fixturesPath,
+            rootScope: path.join(fixturesPath, './L1/L2')
+          });
+
+      assert.equal(md.render('!!! include( L1/c1.md ) !!!\n'),
+        '<p><em>a content</em></p>\n');
+    });
+
     it ('includeRe option', () => {
       const md = markdown()
         .use(markdown_it_include, {
@@ -70,6 +81,19 @@ describe('plugin', () => {
       assert.throws(
         () => md.render('!!! include( xxx.md ) !!!'),
         Error, /not found/i
+      );
+    });
+
+    it ('rootScope violation with rootScopeProtection activated', () => {
+      const md = markdown()
+          .use(markdown_it_include, {
+            root: fixturesPath,
+            rootScope: path.join(fixturesPath, './L1/L2'),
+            rootScopeProtection: true
+          });
+      assert.throws(
+        () => md.render('!!! include( L1/c1.md ) !!!\n'),
+        Error, /outside the specified root directory scope/i
       );
     });
 
