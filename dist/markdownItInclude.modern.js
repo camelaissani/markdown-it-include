@@ -55,7 +55,7 @@ const include_plugin = (md, options) => {
       }
 
       if (!errorMessage) {
-        filePath = path.resolve(rootdir, includePath); // check if child file exists or if there is a circular reference
+        filePath = path.resolve(includePath.indexOf('/') === 0 ? rootdir : parentFilePath ? path.dirname(parentFilePath) : rootdir, `./${includePath}`); // check if child file exists or if there is a circular reference
 
         if (!fs.existsSync(filePath)) {
           // child file does not exist
@@ -77,7 +77,7 @@ const include_plugin = (md, options) => {
         // get content of child file
         mdSrc = fs.readFileSync(filePath, 'utf8'); // check if child file also has includes
 
-        mdSrc = _replaceIncludeByContent(mdSrc, path.dirname(filePath), filePath, filesProcessed); // remove one trailing newline, if it exists: that way, the included content does NOT
+        mdSrc = _replaceIncludeByContent(mdSrc, rootdir, filePath, filesProcessed); // remove one trailing newline, if it exists: that way, the included content does NOT
         // automatically terminate the paragraph it is in due to the writer of the included
         // part having terminated the content with a newline.
         // However, when that snippet writer terminated with TWO (or more) newlines, these, minus one,
