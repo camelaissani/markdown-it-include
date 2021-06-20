@@ -27,6 +27,14 @@ describe('plugin', () => {
         '<p><em>a content</em>\n<em>a content</em></p>\n');
     });
 
+    it ('absolute root path reference', () => {
+      const md = markdown()
+        .use(markdown_it_include, fixturesPath);
+
+      assert.equal(md.render('!!! include( L1/L2/r.md ) !!!'),
+        '<p><em>a content</em></p>\n');
+    });
+
     it ('default options', () => {
       let md = markdown()
         .use(markdown_it_include);
