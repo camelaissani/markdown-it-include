@@ -33,7 +33,7 @@
     "cross-env": "7.0.2",
     "eslint": "7.3.1",
     "glob": "7.1.6",
-    "markdown-it": "11.0.0",
+    "markdown-it": "12.3.2",
     "markdown-it-testgen": "0.1.6",
     "microbundle": "0.12.2",
     "mocha": "8.1.3",
